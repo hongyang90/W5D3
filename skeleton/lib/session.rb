@@ -6,8 +6,9 @@ class Session
   # attr_reader :cookie
 
   def initialize(req)
-     @cookie ? @cookie = JSON.parse(req.cookies['_rails_lite_app']) : @cookie = {}
+     req.cookies['_rails_lite_app'] ? @cookie = JSON.parse(req.cookies['_rails_lite_app']) : @cookie = {}
   end
+
 
   def [](key)
    @cookie[key]
@@ -20,7 +21,7 @@ class Session
   # serialize the hash into json and save in a cookie
   # add to the responses cookies
   def store_session(res)
-    @cookie = @cookie.to_json
-    res.set_cookie("_rails_lite_app", {path: "/", value: @cookie})
+    json_cookie = @cookie.to_json
+    res.set_cookie("_rails_lite_app", {path: "/", value: json_cookie})
   end
 end
